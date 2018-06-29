@@ -1,4 +1,4 @@
-﻿window.DxSample = window.DxSample || {
+window.DxSample = window.DxSample || {
     destroyCurrentEditor: function () {
         if (DxSample.currentEditor != undefined) {
             var container = DxSample.currentEditor.parentElement;
@@ -12,6 +12,17 @@
         var editor = document.createElement('input');
         editor.value = Number(e.Value);
         editor.style.width = String(e.HtmlEvent.currentTarget.clientWidth - 14) + 'px';
+
+        //IT UPDATES THE GRID WHEN CLICK OUT OF CONTROL @atesdanis
+        editor.onfocusout = function () {
+            if (Number(e.Value) != editor.value) {
+                console.log('değer değişti');
+                pivot.PerformCallback('D|' + e.ColumnIndex + '|' + e.RowIndex + '|' + editor.value);
+                return false;
+            }
+        }
+
+
         editor.onkeydown = function (ea) {
             switch (ea.keyCode) {
                 case 13: // ENTER
